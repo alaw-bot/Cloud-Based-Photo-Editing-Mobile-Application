@@ -10,7 +10,7 @@ class PixelizerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: HomePage(), // Set the initial route to HomePage
     );
   }
 }
@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pixelizer - Photo Editing'),
+        title: Text('Pixelizer - Edit your photos'),
       ),
       body: Container(
         color: Colors.black,
@@ -29,13 +29,13 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/pixelizer_logo.png',
+                'assets/home_logo.png', // Display the app logo
                 width: 150.0,
                 height: 150.0,
               ),
               SizedBox(height: 20.0),
               Text(
-                'Welcome to Pixelizer!',
+                'Welcome to Pixelizer!', // Display a welcome message
                 style: TextStyle(fontSize: 24.0, color: Colors.white),
               ),
               SizedBox(height: 20.0),
@@ -43,7 +43,9 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ActionPage()),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ActionPage()), // Navigate to ActionPage
                   );
                 },
                 child: Text('Get Started'),
@@ -59,11 +61,12 @@ class HomePage extends StatelessWidget {
 class ActionPage extends StatelessWidget {
   Future<void> _getImageFromGallery(BuildContext context) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.getImage(
+        source: ImageSource.gallery); // Open the gallery to select an image
 
     if (pickedFile != null) {
       // TODO: Handle the picked image (e.g., display it or process it)
-      print('Image picked: ${pickedFile.path}');
+      print('Image picked: ${pickedFile.path}'); // Print the picked image path
     }
   }
 
@@ -79,7 +82,8 @@ class ActionPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                _getImageFromGallery(context);
+                _getImageFromGallery(
+                    context); // Trigger image selection from the gallery
               },
               child: Text('Gallery'),
             ),
@@ -88,7 +92,9 @@ class ActionPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CameraScreen()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CameraScreen()), // Navigate to CameraScreen
                 );
               },
               child: Text('Camera'),
@@ -116,7 +122,7 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> _initializeCamera() async {
-    final cameras = await availableCameras();
+    final cameras = await availableCameras(); // Get a list of available cameras
 
     // Check if any cameras are available
     if (cameras.isEmpty) {
@@ -124,13 +130,17 @@ class _CameraScreenState extends State<CameraScreen> {
       return;
     }
 
-    _controller = CameraController(cameras[0], ResolutionPreset.medium);
-    _initializeControllerFuture = _controller.initialize();
+    _controller = CameraController(
+        cameras[0],
+        ResolutionPreset
+            .medium); // Use the first available camera with medium resolution
+    _initializeControllerFuture =
+        _controller.initialize(); // Initialize the camera controller
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.dispose(); // Release the camera resources
     super.dispose();
   }
 
@@ -144,9 +154,11 @@ class _CameraScreenState extends State<CameraScreen> {
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return CameraPreview(_controller);
+            return CameraPreview(_controller); // Display the camera preview
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child:
+                    CircularProgressIndicator()); // Show a loading indicator while initializing
           }
         },
       ),
