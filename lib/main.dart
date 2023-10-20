@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:camera/camera.dart';
 
 void main() {
   runApp(PixelizerApp());
@@ -10,7 +10,7 @@ class PixelizerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(), // Set the initial route to HomePage
+      home: HomePage(),
     );
   }
 }
@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pixelizer - Edit your photos'),
+        title: Text('Pixelizer - Edit your media'),
       ),
       body: Container(
         color: Colors.black,
@@ -29,13 +29,13 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/home_logo.png', // Display the app logo
+                'assets/home_logo.png',
                 width: 150.0,
                 height: 150.0,
               ),
               SizedBox(height: 20.0),
               Text(
-                'Welcome to Pixelizer!', // Display a welcome message
+                'Welcome to Pixelizer!',
                 style: TextStyle(fontSize: 24.0, color: Colors.white),
               ),
               SizedBox(height: 20.0),
@@ -44,8 +44,8 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            ActionPage()), // Navigate to ActionPage
+                      builder: (context) => ActionPage(),
+                    ),
                   );
                 },
                 child: Text('Get Started'),
@@ -59,17 +59,6 @@ class HomePage extends StatelessWidget {
 }
 
 class ActionPage extends StatelessWidget {
-  Future<void> _getImageFromGallery(BuildContext context) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.getImage(
-        source: ImageSource.gallery); // Open the gallery to select an image
-
-    if (pickedFile != null) {
-      // TODO: Handle the picked image (e.g., display it or process it)
-      print('Image picked: ${pickedFile.path}'); // Print the picked image path
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,22 +71,28 @@ class ActionPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                _getImageFromGallery(
-                    context); // Trigger image selection from the gallery
+                // Add code to navigate to the Video Recording Page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VideoRecordingPage(),
+                  ),
+                );
               },
-              child: Text('Gallery'),
+              child: Text('Record Videos'),
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
+                // Add code to navigate to the Gallery Page
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          CameraScreen()), // Navigate to CameraScreen
+                    builder: (context) => GalleryPage(),
+                  ),
                 );
               },
-              child: Text('Camera'),
+              child: Text('Select Photos'),
             ),
           ],
         ),
@@ -106,62 +101,105 @@ class ActionPage extends StatelessWidget {
   }
 }
 
-class CameraScreen extends StatefulWidget {
-  @override
-  _CameraScreenState createState() => _CameraScreenState();
-}
-
-class _CameraScreenState extends State<CameraScreen> {
-  late CameraController _controller;
-  late Future<void> _initializeControllerFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeCamera();
-  }
-
-  Future<void> _initializeCamera() async {
-    final cameras = await availableCameras(); // Get a list of available cameras
-
-    // Check if any cameras are available
-    if (cameras.isEmpty) {
-      print('No camera available');
-      return;
-    }
-
-    _controller = CameraController(
-        cameras[0],
-        ResolutionPreset
-            .medium); // Use the first available camera with medium resolution
-    _initializeControllerFuture =
-        _controller.initialize(); // Initialize the camera controller
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose(); // Release the camera resources
-    super.dispose();
-  }
-
+class VideoRecordingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Camera'),
+        title: Text('Video Editing'),
       ),
-      body: FutureBuilder<void>(
-        future: _initializeControllerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return CameraPreview(_controller); // Display the camera preview
-          } else {
-            return Center(
-                child:
-                    CircularProgressIndicator()); // Show a loading indicator while initializing
-          }
-        },
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.videocam,
+              size: 100.0,
+              color: Colors.blue,
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              'Tap the button to start recording video or access gallery',
+              style: TextStyle(fontSize: 18.0),
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                // Add code to start video recording
+              },
+              child: Text('Start Recording'),
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                // Add code to access the gallery
+                _getImageFromGallery(context);
+              },
+              child: Text('Access Gallery'),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> _getImageFromGallery(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getVideo(
+        source: ImageSource.gallery); // Open the gallery to select a video
+
+    if (pickedFile != null) {
+      // Handle the selected video, for example, play or process it
+      // You can navigate to a new page for video editing here
+      print('Video picked: ${pickedFile.path}');
+    }
+  }
+}
+
+class GalleryPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Gallery Page'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.photo,
+              size: 100.0,
+              color: Colors.green,
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              'Select photos from your gallery',
+              style: TextStyle(fontSize: 18.0),
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                // Add code to access the gallery for selecting photos
+                _getImageFromGallery(context);
+              },
+              child: Text('Select Photos'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _getImageFromGallery(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(
+        source: ImageSource.gallery); // Open the gallery to select photos
+
+    if (pickedFile != null) {
+      // Handle the selected photos, for example, display or process them
+      // You can navigate to a new page for photo editing here
+      print('Photos picked: ${pickedFile.path}');
+    }
   }
 }
