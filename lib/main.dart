@@ -71,28 +71,28 @@ class ActionPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                // Add code to navigate to the Video Recording Page
+                // Add code to navigate to the Photo Camera Page
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => VideoRecordingPage(),
+                    builder: (context) => PhotoCameraPage(),
                   ),
                 );
               },
-              child: Text('Record Videos'),
+              child: Text('Take Photos'),
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                // Add code to navigate to the Gallery Page
+                // Add code to navigate to the Video Camera Page
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GalleryPage(),
+                    builder: (context) => VideoCameraPage(),
                   ),
                 );
               },
-              child: Text('Select Photos'),
+              child: Text('Record Videos'),
             ),
           ],
         ),
@@ -101,12 +101,49 @@ class ActionPage extends StatelessWidget {
   }
 }
 
-class VideoRecordingPage extends StatelessWidget {
+class PhotoCameraPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Add camera access code for taking photos here
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Editing'),
+        title: Text('Photo Camera'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.camera_alt,
+              size: 100.0,
+              color: Colors.blue,
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              'Tap the button to take photos',
+              style: TextStyle(fontSize: 18.0),
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                // Add code to access the camera for taking photos
+              },
+              child: Text('Take Photos'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class VideoCameraPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Add camera access code for recording videos here
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Video Camera'),
       ),
       body: Center(
         child: Column(
@@ -119,87 +156,19 @@ class VideoRecordingPage extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             Text(
-              'Tap the button to start recording video or access gallery',
+              'Tap the button to start recording videos',
               style: TextStyle(fontSize: 18.0),
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                // Add code to start video recording
+                // Add code to access the camera for recording videos
               },
-              child: Text('Start Recording'),
-            ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                // Add code to access the gallery
-                _getImageFromGallery(context);
-              },
-              child: Text('Access Gallery'),
+              child: Text('Record Videos'),
             ),
           ],
         ),
       ),
     );
-  }
-
-  Future<void> _getImageFromGallery(BuildContext context) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.getVideo(
-        source: ImageSource.gallery); // Open the gallery to select a video
-
-    if (pickedFile != null) {
-      // Handle the selected video, for example, play or process it
-      // You can navigate to a new page for video editing here
-      print('Video picked: ${pickedFile.path}');
-    }
-  }
-}
-
-class GalleryPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Gallery Page'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.photo,
-              size: 100.0,
-              color: Colors.green,
-            ),
-            SizedBox(height: 20.0),
-            Text(
-              'Select photos from your gallery',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                // Add code to access the gallery for selecting photos
-                _getImageFromGallery(context);
-              },
-              child: Text('Select Photos'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _getImageFromGallery(BuildContext context) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.getImage(
-        source: ImageSource.gallery); // Open the gallery to select photos
-
-    if (pickedFile != null) {
-      // Handle the selected photos, for example, display or process them
-      // You can navigate to a new page for photo editing here
-      print('Photos picked: ${pickedFile.path}');
-    }
   }
 }
