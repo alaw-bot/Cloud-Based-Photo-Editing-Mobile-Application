@@ -130,6 +130,13 @@ class PhotoCameraPage extends StatelessWidget {
               },
               child: Text('Take Photos'),
             ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                // Add code to access the camera for taking photos
+              },
+              child: Text('Access Gallery'),
+            ),
           ],
         ),
       ),
