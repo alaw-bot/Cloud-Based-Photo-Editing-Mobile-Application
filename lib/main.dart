@@ -120,7 +120,7 @@ class PhotoCameraPage extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             Text(
-              'Tap the button to take photos',
+              'Tap the button to start editing photos',
               style: TextStyle(fontSize: 18.0),
             ),
             SizedBox(height: 20.0),
